@@ -9,12 +9,6 @@ asset Funds identified by fundId{
   o String fundId
   o Double balance
 }
-asset TokenTransferAsset identified by TokenTransferAssetId{
-  o String TokenTransferAssetId
-  --> Employee from
-  --> Employee to
-  o Double amount
-}
 
 enum SalaryStatus{
   o PAID
@@ -42,7 +36,4 @@ transaction FundTransfer {
 transaction EmployeeSalary {
   --> Funds fund
   --> Employee employee
-}
-transaction EToETokenTransfer {
-  o TokenTransferAsset tta
 }
