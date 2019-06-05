@@ -1,0 +1,48 @@
+namespace test
+
+asset Wallet identified by walletId {
+  o String walletId
+  o Double balance
+}
+
+asset Funds identified by fundId{
+  o String fundId
+  o Double balance
+}
+asset TokenTransferAsset identified by TokenTransferAssetId{
+  o String TokenTransferAssetId
+  --> Employee from
+  --> Employee to
+  o Double amount
+}
+
+enum SalaryStatus{
+  o PAID
+  o UNPAID
+}
+
+participant Employee identified by employeeId {
+  o String employeeId
+  o SalaryStatus salaryStatus default="UNPAID"
+  o Double salary
+  -->Wallet wallet
+}
+
+participant Manager identified by managerId{
+   o String managerId
+   -->Wallet wallet
+}
+
+transaction FundTransfer {
+  o Double amount
+  --> Manager manager
+  --> Funds fund
+}
+
+transaction EmployeeSalary {
+  --> Funds fund
+  --> Employee employee
+}
+transaction EToETokenTransfer {
+  o TokenTransferAsset tta
+}

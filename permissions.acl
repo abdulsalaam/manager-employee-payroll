@@ -1,0 +1,104 @@
+// All Manager Applicable Rules
+
+rule OnlyManagerCanAddFunds{
+  description: "Only Manager Can Add Funds"
+  participant: "test.Manager"
+  operation: ALL
+  resource: "test.FundTransfer"
+  action: ALLOW
+}
+
+rule ManagerCanSeeFunds {
+  description: "Manager can see funds"
+    participant: "test.Manager"
+    operation: ALL
+    resource: "test.Funds"
+    action: ALLOW
+}
+
+rule ManagerCanSeeAllEmployees {
+  description: "Manager Can See All Managers And Employees "
+    participant: "test.Manager"
+    operation: ALL
+    resource: "test.Employee"
+    action: ALLOW
+}
+rule ManagerCanSeeAllManagers {
+  description: "Manager Can See All Managers And Employees "
+    participant: "test.Manager"
+    operation: READ
+    resource: "test.Manager"
+    action: ALLOW
+}
+
+rule OnlyManagerCanSeeHisWallet{
+    description: "Only Manager Can See His Wallet"
+    participant(p): "test.Manager"
+    operation: ALL
+    resource(r): "test.Wallet"
+    condition: (r.walletId == p.wallet.walletId)
+    action: ALLOW
+}
+
+//All Employee Applicable Rules
+
+
+
+rule EmployeeCanTakeFromFunds{
+  description: "EmployeeCanTakeFromFunds"
+  participant(p): "test.Employee"
+  operation: ALL
+  resource: "test.Funds"
+  transaction(tx): "test.EmployeeSalary"
+  condition: (tx.employee.getIdentifier() == p.getIdentifier())
+  action: ALLOW
+}
+rule EmployeeCanSeeFunds {
+  description: "Manager can see funds"
+    participant: "test.Employee"
+    operation: READ
+    resource: "test.Funds"
+    action: ALLOW
+}
+rule EmployeesCanSeeItsOwnInfo {
+  description: "Employees Can See Its Own Info  "
+    participant(p): "test.Employee"
+    operation: READ
+    resource(r): "test.Employee"
+    condition:(r.getIdentifier() == p.getIdentifier())
+    action: ALLOW
+}
+
+rule EmployeeCanSeeHisOwnWallet{
+    description: "Only Employee Can See His Wallet"
+    participant(p): "test.Employee"
+    operation: READ
+    resource(r): "test.Wallet"
+    condition: (r.getIdentifier() == p.wallet.getIdentifier())
+    action: ALLOW
+}
+
+// All Amdin Rights
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"      
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+rule SystemACL {
+    description: "System ACL to permit all access"
+    participant: "org.hyperledger.composer.system.Participant"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
